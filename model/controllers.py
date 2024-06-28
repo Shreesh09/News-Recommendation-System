@@ -1,6 +1,6 @@
-from recommendation_model import *
+from recommendation_model import TFIDF_based_model, df2
 import pandas as pd
-from models import *
+from models import Users, News, app, db
 
 def recommendedNews(user, page):
     try:
@@ -25,10 +25,10 @@ def recommendedNews(user, page):
         raise e
 
 
-def createUser(username):
+def createUser(username, password):
     with app.app_context():
         try:
-            new_user = Users(username=username)
+            new_user = Users(username=username, password=password)
             db.session.add(new_user)
             db.session.commit()
         except Exception as e:
@@ -44,6 +44,15 @@ def addNews(username, news_title):
         except Exception as e:
             db.session.rollback()
             raise e
+
+
+def getUserCredentials(username):
+    try:
+        with app.app_context():
+            user = Users.query.filter_by(username=username).first()
+            return user
+    except Exception as e:
+        raise e
 
 def getUserHistory(username):
     try:

@@ -14,6 +14,7 @@ db = SQLAlchemy(app)
 # Define the User model
 class Users(db.Model):
     username = db.Column(db.String(255), primary_key=True)
+    password = db.Column(db.String(255), nullable=False)
 
 # Define the News model
 class News(db.Model):

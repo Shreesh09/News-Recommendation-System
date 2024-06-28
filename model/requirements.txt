@@ -8,3 +8,4 @@ seaborn
 wordcloud
 flask
 pyhton-dotenv
+flask-jwt-extended

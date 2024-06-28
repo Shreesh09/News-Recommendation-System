@@ -1,17 +1,46 @@
 # Flask
-from flask import request, render_template, jsonify
-from controllers import *
+import os, datetime
+from flask import request, jsonify
+from controllers import recommendedNews, createUser, addNews, getUserCredentials, getUserHistory
 from app import app
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from hashlib import sha256
+from dotenv import load_dotenv
 
-@app.route('/', methods=['GET'])
-def index():
-    # Main page
-    return render_template('index.html')
+load_dotenv()
+app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY') # Replace with your own secret key
+jwt = JWTManager(app)
+
+def hash_password(password, salt=os.getenv('SALT')):
+    password = password.encode('utf-8')
+    salt = salt.encode('utf-8')
+    hashed_password = sha256(password + salt).hexdigest()
+    return hashed_password
+
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        username = request.json['username']
+        password = request.json['password']
+        hashed_password = hash_password(password)
+
+        credentials = getUserCredentials(username);
+        if(credentials.password == hashed_password):
+            access_token = create_access_token(identity=username, expires_delta=datetime.timedelta(days=1))
+        else:
+            raise Exception("wrong username or password")
+        
+        return jsonify({'access_token': access_token}), 200
+    except Exception as e:
+        print(e)
+        error_message = str(e)
+        return jsonify({'error': error_message}), 500
 
 @app.route('/getNews', methods=['GET'])
+@jwt_required()
 def get_news():
     try:
-        user = request.args.get('username')
+        user = get_jwt_identity()
         page = int(request.args.get('page'))
         recommendations = recommendedNews(user, page)
         json_data = recommendations.to_json(orient='records')
@@ -25,27 +54,34 @@ def get_news():
 def create_user():
     try:
         username = request.json['username']
-        return createUser(username)
+        password = request.json['password']
+        hashed_password = hash_password(password)
+
+        createUser(username, hashed_password)
+        return jsonify({'message': 'user added successfully'})
     except Exception as e:
         print(e)
         error_message = str(e)
         return jsonify({'error': error_message}), 500
 
 @app.route('/addNews', methods=['POST'])
+@jwt_required()
 def add_news():
     try:
-        username = request.json['username']
+        username = get_jwt_identity()
         news_title = request.json['news_title']
-        return addNews(username, news_title)
+        addNews(username, news_title)
+        return jsonify({'message': 'news added successfully'})
     except Exception as e:
         print(e)
         error_message = str(e)
         return jsonify({'error': error_message}), 500
 
 @app.route('/getUserHistory', methods=['GET'])
+@jwt_required()
 def get_user_history():
     try:
-        username = request.args.get('username')
+        username = get_jwt_identity()
         user_history = getUserHistory(username)
         return user_history
     except Exception as e:
