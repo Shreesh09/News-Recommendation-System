@@ -1,0 +1,7 @@
+model/__pycache__
+model/train/mind-news-dataset
+processed_data.csv
+raw_data.csv
+mind-news-dataset.zip
+.env
+myenv
