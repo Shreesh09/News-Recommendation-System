@@ -1,7 +1,6 @@
-model/__pycache__
-model/train/news-dataset-18920
+server/__pycache__
+model/news-dataset-18920
 processed_data.csv
-cosine_similarities.npy
 news-dataset-18920.zip
 .env
 myenv

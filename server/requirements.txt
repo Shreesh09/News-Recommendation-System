@@ -1,0 +1,11 @@
+pandas
+numpy
+nltk
+scikit-learn
+plotly
+matplotly
+seaborn
+wordcloud
+flask
+pyhton-dotenv
+flask-jwt-extended
