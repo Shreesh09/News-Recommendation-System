@@ -36,6 +36,7 @@ def login():
         error_message = str(e)
         return jsonify({'error': error_message}), 500
 
+
 @app.route('/getNewsRecommendation', methods=['GET'])
 @jwt_required()
 def get_news_recommendation():
@@ -49,6 +50,7 @@ def get_news_recommendation():
         print(e)
         error_message = str(e)
         return jsonify({'error': error_message}), 500
+
 
 @app.route('/createUser', methods=['POST'])
 def create_user():
@@ -64,6 +66,7 @@ def create_user():
         error_message = str(e)
         return jsonify({'error': error_message}), 500
 
+
 @app.route('/addNewsRead', methods=['POST'])
 @jwt_required()
 def add_news_read():
@@ -76,6 +79,7 @@ def add_news_read():
         print(e)
         error_message = str(e)
         return jsonify({'error': error_message}), 500
+
 
 @app.route('/getUserHistory', methods=['GET'])
 @jwt_required()

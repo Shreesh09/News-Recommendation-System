@@ -3,14 +3,10 @@ from app import app
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from sqlalchemy import Sequence
-# import csv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
-# Initialize the database
 db = SQLAlchemy(app)
 
 # Define the User model
