@@ -1,7 +1,7 @@
 # Flask
 import os, datetime
 from flask import request, jsonify
-from controllers import recommendedNews, createUser, addNews, getUserCredentials, getUserHistory
+from controllers import createUser, getUserCredentials, recommendedNews, addNewsRead, getUserHistory
 from app import app
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from hashlib import sha256
@@ -36,9 +36,9 @@ def login():
         error_message = str(e)
         return jsonify({'error': error_message}), 500
 
-@app.route('/getNews', methods=['GET'])
+@app.route('/getNewsRecommendation', methods=['GET'])
 @jwt_required()
-def get_news():
+def get_news_recommendation():
     try:
         user = get_jwt_identity()
         page = int(request.args.get('page'))
@@ -64,13 +64,13 @@ def create_user():
         error_message = str(e)
         return jsonify({'error': error_message}), 500
 
-@app.route('/addNews', methods=['POST'])
+@app.route('/addNewsRead', methods=['POST'])
 @jwt_required()
-def add_news():
+def add_news_read():
     try:
         username = get_jwt_identity()
-        news_title = request.json['news_title']
-        addNews(username, news_title)
+        news_id = int(request.json['news_id'])
+        addNewsRead(username, news_id)
         return jsonify({'message': 'news added successfully'})
     except Exception as e:
         print(e)
@@ -83,7 +83,7 @@ def get_user_history():
     try:
         username = get_jwt_identity()
         user_history = getUserHistory(username)
-        return user_history
+        return user_history.to_json(orient='records')
     except Exception as e:
         print(e)
         error_message = str(e)

@@ -1,27 +1,43 @@
-from recommendation_model import TFIDF_based_model, df2
+from recommendation_model import content_based_filtering_model
 import pandas as pd
-from models import Users, News, app, db
+from models import Users, News, NewsRead, app, db
+import random
 
 def recommendedNews(user, page):
     try:
         recommendations = []
-        user_history = getUserHistory(user)
+        user_history = getUserHistoryById(user)
         i = (page-1)*3;
         while i < len(user_history) and (i < page*3):
-            title = user_history[i]
-            ind=df2[df2['Title']==title].index[0]
-            print(ind)
-            recs = TFIDF_based_model(ind, 4)
-            recommendations.append(recs)
+            recs = content_based_filtering_model(user_history[i], 3)
+            recommendations.append(getNewsArticle(recs))
             i += 1
-
-        if len(recommendations) < 9:
-            recommendations.append(df2.sample(n=(9-len(recommendations))))
+        if len(recommendations) < 3:
+            random_numbers = [random.randint(0, 1000) for _ in range(3*(3 - len(recommendations)))]
+            recommendations.append(getNewsArticle(random_numbers))
 
         return pd.concat(recommendations)
     
     except Exception as e:
         print(e)
+        raise e
+    
+
+def getNewsArticle(indexes):
+    try:
+        with app.app_context():
+            news = []  # Define the 'news' variable as an empty list
+            for index in indexes:
+                news_item = News.query.filter_by(id=index).first()
+                news.append(pd.DataFrame({
+                'id': [news_item.id],
+                'date': [news_item.date],
+                'title': [news_item.title],
+                'text': [news_item.text],
+                'link': [news_item.link],
+                }))
+            return pd.concat(news)
+    except Exception as e:
         raise e
 
 
@@ -35,10 +51,10 @@ def createUser(username, password):
             db.session.rollback()
             raise e
 
-def addNews(username, news_title):
+def addNewsRead(username, news_id):
     with app.app_context():
         try:
-            new_news = News(username=username, title=news_title)
+            new_news = NewsRead(username=username, id=news_id)
             db.session.add(new_news)
             db.session.commit()
         except Exception as e:
@@ -54,11 +70,29 @@ def getUserCredentials(username):
     except Exception as e:
         raise e
 
+def getUserHistoryById(username):
+    try:
+        with app.app_context():
+            user_news = NewsRead.query.filter_by(username=username).all()
+            news_IDs = [news.id for news in user_news]
+            return news_IDs
+    except Exception as e:
+        raise e
+    
+
 def getUserHistory(username):
     try:
         with app.app_context():
-            user_news = News.query.filter_by(username=username).all()
-            news_titles = [news.title for news in user_news]
-            return news_titles
+            news = []
+            user_news = News.query.join(NewsRead).filter(NewsRead.username == username).all()
+            for news_item in user_news:
+                news.append(pd.DataFrame({
+                'id': [news_item.id],
+                'date': [news_item.date],
+                'title': [news_item.title],
+                'text': [news_item.text],
+                'link': [news_item.link],
+                }))
+        return pd.concat(news)
     except Exception as e:
         raise e
