@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Change to server directory
+        run: cd server
+        
       - uses: actions/checkout@v4
 
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
           python-version: '3.12'
-
-      - name: Change to server directory
-        run: cd server
 
       - name: Create and start virtual environment
         run: |
