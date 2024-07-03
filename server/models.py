@@ -3,6 +3,8 @@ from app import app
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from sqlalchemy import Sequence
+from datetime import datetime
+# import csv
 
 load_dotenv()
 
@@ -17,10 +19,10 @@ class Users(db.Model):
 # Define the News model
 class News(db.Model):
     id = db.Column(db.Integer, Sequence('news_id_seq', start=0, increment=1, minvalue=0), primary_key=True)
-    date = db.Column(db.String(255))
-    title = db.Column(db.String(255))
+    date = db.Column(db.Text)
+    title = db.Column(db.Text)
     text = db.Column(db.Text)
-    link = db.Column(db.String(255))
+    link = db.Column(db.Text)
     cleaned_desc = db.Column(db.Text)
 
 # def import_news_from_csv(file_path):
@@ -28,8 +30,12 @@ class News(db.Model):
 #         with open(file_path, 'r') as csv_file:
 #             csv_reader = csv.DictReader(csv_file)
 #             for row in csv_reader:
+#                 date_str = row['date']
+#                 date_obj = datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z")
+#                 unix_timestamp = int(date_obj.timestamp())
+
 #                 news = News(
-#                     date=row['date'],
+#                     date=unix_timestamp,
 #                     title=row['title'],
 #                     text=row['text'],
 #                     link=row['link'],
@@ -37,7 +43,7 @@ class News(db.Model):
 #                 )
 #                 db.session.add(news)
 #             db.session.commit()
-# import_news_from_csv("data/processed_data.csv")
+
 
 
 # Define the NewsRead model
@@ -48,3 +54,4 @@ class NewsRead(db.Model):
 with app.app_context():
     db.create_all()
 
+# import_news_from_csv("../model/processed_data.csv")

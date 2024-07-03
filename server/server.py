@@ -1,7 +1,7 @@
 # Flask
 import os, datetime
 from flask import request, jsonify
-from controllers import createUser, getUserCredentials, recommendedNews, addNewsRead, getUserHistory
+from controllers import createUser, getUserCredentials, recommendedNews, addNewsRead, getUserHistory, searchNewsArticle
 from app import app
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from hashlib import sha256
@@ -45,6 +45,20 @@ def get_news_recommendation():
         page = int(request.args.get('page'))
         recommendations = recommendedNews(user, page)
         json_data = recommendations.to_json(orient='records')
+        return json_data
+    except Exception as e:
+        print(e)
+        error_message = str(e)
+        return jsonify({'error': error_message}), 500
+    
+@app.route('/search', methods=['GET'])
+@jwt_required()
+def search():
+    try:
+        title = request.args.get('search')
+        page = int(request.args.get('page'))
+        articles = searchNewsArticle(title, page)
+        json_data = articles.to_json(orient='records')
         return json_data
     except Exception as e:
         print(e)

@@ -6,22 +6,23 @@ import random
 def recommendedNews(user, page):
     try:
         recommendations = []
-        user_history = getUserHistoryById(user)
-        i = (page-1)*3;
-        while i < len(user_history) and (i < page*3):
-            recs = content_based_filtering_model(user_history[i], 3)
-            recommendations.append(getNewsArticle(recs))
-            i += 1
-        if len(recommendations) < 3:
-            random_numbers = [random.randint(0, 1000) for _ in range(3*(3 - len(recommendations)))]
-            recommendations.append(getNewsArticle(random_numbers))
-
-        return pd.concat(recommendations)
-    
+        user_history = getUserHistory(user)
+        indexes = user_history['id'].tolist()
+        inputs = user_history['text'].tolist()
+        recs = content_based_filtering_model(indexes, inputs, page)
+        recommendations.append(getNewsArticle(recs))
+        return pd.concat(recommendations)    
     except Exception as e:
-        print(e)
         raise e
-    
+
+def searchNewsArticle(title, page):
+    try:
+        articles = []
+        searches = content_based_filtering_model([], [title], page)
+        articles.append(getNewsArticle(searches))
+        return pd.concat(articles)
+    except Exception as e:
+        raise e    
 
 def getNewsArticle(indexes):
     try:
