@@ -4,19 +4,26 @@ import { headers, SERVER_URL } from './keys.jsx';
 const recommendationLoader = async ({ params }) => {
     let state = 0
     let page = params.page ?? 1;
-    console.log(params.page)
-    const response = await axios.get(`${SERVER_URL}/getNewsRecommendation`, { params: { page }, headers: headers });
+    let response;
+    try {
+        response = await axios.get(`${SERVER_URL}/getNewsRecommendation`, { params: { page }, headers: headers });
+    } catch (error) {
+        console.log(error);
+    }
     const articles = response.data;
-    console.log(articles)
     return { state, page, articles };
   }
   
   const historyLoader = async ({ params }) => {
     let state = 1
     let page = params.page ?? 1;
-    const response = await axios.get(`${SERVER_URL}/getUserHistory`, { params: { page }, headers: headers });
+    let response;
+    try {
+        response = await axios.get(`${SERVER_URL}/getUserHistory`, { params: { page }, headers: headers });
+    } catch (error) {
+        console.log(error);
+    }
     const articles = response.data;
-    console.log(articles)
     return { state, page, articles };
   }
   
@@ -24,9 +31,13 @@ const recommendationLoader = async ({ params }) => {
     let state = 2
     let search = params.search;
     let page = params.page ?? 1;
-    const response = await axios.get(`${SERVER_URL}/search`, { params: { search, page }, headers: headers });
+    let response;
+    try {
+        response = await axios.get(`${SERVER_URL}/search`, { params: { search, page }, headers: headers });
+    } catch (error) {
+        console.log(error);
+    }
     const articles = response.data;
-    console.log(articles)
     return { state, page, articles, search };
   }
 

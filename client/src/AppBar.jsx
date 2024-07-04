@@ -14,6 +14,8 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,12 +59,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+
+
 const pages = ['dashboard','history'];
 const settings = ['History', 'Logout'];
 
-function ResponsiveAppBar({state}) {
+function ResponsiveAppBar({state, search}) {
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [searchText, setSearchText] = React.useState('');
+
+  useEffect(() => {setSearchText(search)}, [search])
+
+  useEffect(() => {
+    if(!searchText || searchText.length == 0)
+      if(state == 2)
+        return navigate(`/dashboard/1`, { absolute: "path" })
+      else
+        return
+
+      navigate(`/search/${searchText}/1`, { absolute: "path" })
+  }, [searchText])
+
   const navigate = useNavigate();
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -112,28 +130,24 @@ function ResponsiveAppBar({state}) {
 
           <Box marginLeft={'50px'} sx={{ display: "flex", flexGrow: 1, gap: '20px'}}>
             {pages.map((page, ind) => (
-              <Button
-                key={page}
-
-                onClick={() => {
-                  let url = `../../${page}/1`;
-                  if(state == 2)
-                    url = `./../../${page}/1`;
-                  navigate(url, { relative: "path" })
-                }}
+              <Link key={page} to={`/${page}/1`}><Button
                 sx={{ my: 2, color: 'white', fontSize: "18px", fontWeight:(state == ind?"bold":"normal") }}
               >
                 {page}
-              </Button>
+              </Button></Link>
             ))}
           </Box>
              <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
+            <SearchIconWrapper >
+              <SearchIcon sx={{position: 'relative', zIndex: '100'}} />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(event, value) => {
+                setSearchText(event.target.value)
+              }}
+              value={searchText}
             />
           </Search>
 
@@ -161,7 +175,14 @@ function ResponsiveAppBar({state}) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => {
+                  if(setting == 'History') {
+                    if(state == 0 || state == 2) {
+                      navigate(`/history/1`, { absolute: "path" })
+                    }
+                  }
+                  handleCloseUserMenu();
+                }}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

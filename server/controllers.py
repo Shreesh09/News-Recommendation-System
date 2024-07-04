@@ -1,6 +1,7 @@
 from recommendation_model import content_based_filtering_model
 import pandas as pd
-from models import Users, News, NewsRead, app, db
+from models import Users, News, NewsRead, db
+from app import app
 import random
 
 def recommendedNews(user, page):
