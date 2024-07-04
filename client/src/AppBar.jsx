@@ -15,7 +15,8 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { useDeferredValue } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -49,13 +50,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
   },
 }));
 
@@ -64,21 +58,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const pages = ['dashboard','history'];
 const settings = ['History', 'Logout'];
 
-function ResponsiveAppBar({state, search}) {
-
+function ResponsiveAppBar() {
+  const [state, setState] = React.useState(0);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [searchText, setSearchText] = React.useState('');
-
-  useEffect(() => {setSearchText(search)}, [search])
+  const [searchText, setSearchText] = React.useState(null);
 
   useEffect(() => {
-    if(!searchText || searchText.length == 0)
-      if(state == 2)
-        return navigate(`/dashboard/1`, { absolute: "path" })
-      else
-        return
-
-      navigate(`/search/${searchText}/1`, { absolute: "path" })
+    if(!searchText)
+        return;
+    if(searchText.length == 0)
+        return navigate(`dashboard/1`, { absolute: "path" })
+    navigate(`search/${searchText}/1`, { absolute: "path" })
   }, [searchText])
 
   const navigate = useNavigate();
@@ -130,11 +120,14 @@ function ResponsiveAppBar({state, search}) {
 
           <Box marginLeft={'50px'} sx={{ display: "flex", flexGrow: 1, gap: '20px'}}>
             {pages.map((page, ind) => (
-              <Link key={page} to={`/${page}/1`}><Button
+              <NavLink key={page} to={`${page}/1`} className={({ isActive }) => {
+                if(isActive)
+                    setState(ind);
+            }}><Button
                 sx={{ my: 2, color: 'white', fontSize: "18px", fontWeight:(state == ind?"bold":"normal") }}
               >
                 {page}
-              </Button></Link>
+              </Button></NavLink>
             ))}
           </Box>
              <Search>
@@ -147,7 +140,7 @@ function ResponsiveAppBar({state, search}) {
               onChange={(event, value) => {
                 setSearchText(event.target.value)
               }}
-              value={searchText}
+              value={searchText??""}
             />
           </Search>
 
@@ -178,8 +171,12 @@ function ResponsiveAppBar({state, search}) {
                 <MenuItem key={setting} onClick={() => {
                   if(setting == 'History') {
                     if(state == 0 || state == 2) {
-                      navigate(`/history/1`, { absolute: "path" })
+                      navigate(`history/1`, { absolute: "path" })
                     }
+                  } else {
+                    sessionStorage.removeItem('username');
+                    sessionStorage.removeItem('token');
+                    navigate('/login', { absolute: "path" })
                   }
                   handleCloseUserMenu();
                 }}>

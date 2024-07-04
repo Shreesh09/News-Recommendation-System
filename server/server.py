@@ -1,8 +1,8 @@
 # Flask
 import os, datetime
 from flask import request, jsonify
-from controllers import createUser, getUserCredentials, recommendedNews, addNewsRead, getUserHistory, searchNewsArticle
 from app import app
+from controllers import createUser, getUserCredentials, recommendedNews, addNewsRead, getUserHistory, searchNewsArticle
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from hashlib import sha256
 from dotenv import load_dotenv

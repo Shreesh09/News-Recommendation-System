@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import "./index.css"
 import {
   createBrowserRouter,
+  createHashRouter,
   RouterProvider,
 } from "react-router-dom";
 import ErrorPage from './ErrorPage.jsx';
@@ -11,6 +12,7 @@ import RegistrationPage from './RegistrationPage.jsx';
 import NewsDashboard from './NewsDashboard.jsx';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { recommendationLoader, historyLoader, searchLoader } from './news_loaders.jsx';
+import { Home } from './Home.jsx';
 
 const theme = createTheme({
   palette: {
@@ -27,7 +29,7 @@ const theme = createTheme({
   },
 });
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <LoginPage/>,
@@ -44,22 +46,28 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage/>,
   },
   {
-    path: "/dashboard/:page",
-    element: <NewsDashboard/>,
-    errorElement: <ErrorPage/>,
-    loader: recommendationLoader,
-  },
-  {
-    path: "/history/:page",
-    element: <NewsDashboard/>,
-    errorElement: <ErrorPage/>,
-    loader: historyLoader,
-  },
-  {
-    path: "/search/:search/:page",
-    element: <NewsDashboard/>,
-    errorElement: <ErrorPage/>,
-    loader: searchLoader,
+    path: "/home",
+    element: <Home/>,
+    children: [
+      {
+        path: "/home/dashboard/:page",
+        element: <NewsDashboard/>,
+        errorElement: <ErrorPage/>,
+        loader: recommendationLoader,
+      },
+      {
+        path: "/home/history/:page",
+        element: <NewsDashboard/>,
+        errorElement: <ErrorPage/>,
+        loader: historyLoader,
+      },
+      {
+        path: "/home/search/:search/:page",
+        element: <NewsDashboard/>,
+        errorElement: <ErrorPage/>,
+        loader: searchLoader,
+      }
+    ]
   }
 ]);
 
