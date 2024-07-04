@@ -1,0 +1,4 @@
+export const SERVER_URL = 'https://news-recommendation.azurewebsites.net';
+export const headers = {
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMDA2MzcyMSwianRpIjoiOTAyMDI1MTgtMDk1Zi00OGE5LWE5NTAtZjRiNjdlNGIwYWI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QyIiwibmJmIjoxNzIwMDYzNzIxLCJjc3JmIjoiMThkZmMxNTQtMDkzMC00Y2MzLWIxMmQtYzQzYzk0ZmFkNTY2IiwiZXhwIjoxNzIwMTUwMTIxfQ.gSrJzG5QODp5P4FkB3gHpfNVNU1-hfiXvjad0dM5AIg',
+  }
