@@ -17,8 +17,8 @@ def content_based_filtering_model(indexes, inputs, page):
     similarity_score = [score for score in similarity_score if score[0] not in indexes]
     similarity_score = sorted(similarity_score, key=lambda x: x[1], reverse=True)
     # Get the scores of the n most similar news articles. Ignore the first movie.
-    start = 9*page;
-    end = min(9*(page+1), len(similarity_score))
+    start = 9*(page-1);
+    end = min(9*(page), len(similarity_score))
     similarity_score = similarity_score[start:end+1]
     news_indices = [i[0] for i in similarity_score]
   

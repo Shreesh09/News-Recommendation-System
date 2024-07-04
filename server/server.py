@@ -44,6 +44,8 @@ def get_news_recommendation():
         user = get_jwt_identity()
         page = int(request.args.get('page'))
         recommendations = recommendedNews(user, page)
+        if(len(recommendations) == 0):
+            return jsonify({})
         json_data = recommendations.to_json(orient='records')
         return json_data
     except Exception as e:
@@ -58,6 +60,8 @@ def search():
         title = request.args.get('search')
         page = int(request.args.get('page'))
         articles = searchNewsArticle(title, page)
+        if(len(articles) == 0):
+            return jsonify({})
         json_data = articles.to_json(orient='records')
         return json_data
     except Exception as e:
@@ -100,7 +104,10 @@ def add_news_read():
 def get_user_history():
     try:
         username = get_jwt_identity()
-        user_history = getUserHistory(username)
+        page = int(request.args.get('page'))
+        user_history = getUserHistory(username, page, True)
+        if(len(user_history) == 0):
+            return jsonify({})
         return user_history.to_json(orient='records')
     except Exception as e:
         print(e)

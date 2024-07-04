@@ -1,6 +1,6 @@
 server/__pycache__
-model/news-dataset-18920
+model/bbc-news
 processed_data.csv
-news-dataset-18920.zip
+bbc-news.zip
 .env
 myenv
