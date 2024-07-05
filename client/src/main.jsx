@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { recommendationLoader, historyLoader, searchLoader } from './news_loaders.jsx';
 import { Home } from './Home.jsx';
 import { registrationAction } from './auth_actions.jsx';
+import App from './App.jsx';
 
 
 const theme = createTheme({
@@ -33,19 +34,27 @@ const theme = createTheme({
 const router = createHashRouter([
   {
     path: "/",
-    element: <LoginPage/>,
+    element: <App/>,
     errorElement: <ErrorPage/>,
-  },
-  {
-    path: "/login",
-    element: <LoginPage/>,
-    errorElement: <ErrorPage/>,
-  },
-  {
-    path: "/register",
-    element: <RegistrationPage/>,
-    errorElement: <ErrorPage/>,
-    action: registrationAction,
+    children: [
+      {
+        path: "/",
+        element: <LoginPage/>,
+        errorElement: <ErrorPage/>,
+      },
+      {
+        path: "/login",
+        element: <LoginPage/>,
+        errorElement: <ErrorPage/>,
+      },
+      {
+        path: "/register",
+        element: <RegistrationPage/>,
+        errorElement: <ErrorPage/>,
+        action: registrationAction,
+      },
+      
+    ]
   },
   {
     path: "/home",
