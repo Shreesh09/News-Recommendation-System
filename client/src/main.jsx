@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import "./index.css"
 import {
-  createBrowserRouter,
   createHashRouter,
   RouterProvider,
 } from "react-router-dom";
@@ -13,6 +12,7 @@ import NewsDashboard from './NewsDashboard.jsx';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { recommendationLoader, historyLoader, searchLoader } from './news_loaders.jsx';
 import { Home } from './Home.jsx';
+import { registrationAction } from './auth_actions.jsx';
 
 
 const theme = createTheme({
@@ -45,6 +45,7 @@ const router = createHashRouter([
     path: "/register",
     element: <RegistrationPage/>,
     errorElement: <ErrorPage/>,
+    action: registrationAction,
   },
   {
     path: "/home",
