@@ -3,38 +3,17 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link as RouterLink } from 'react-router-dom';
-import axios from 'axios';
-import { SERVER_URL } from './keys';
-import { useNavigate } from 'react-router-dom';
+import { Form, Link as RouterLink, useActionData } from 'react-router-dom';
 
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-
-  const handleSubmit = async (event) => {
-    try {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      const username = formData.get('username');
-      const password = formData.get('password');
-      const response = await axios.post(`${SERVER_URL}/login`, {username, password})
-      sessionStorage.setItem('token', response.data.access_token);
-      sessionStorage.setItem('username', username)
-      navigate('/home/dashboard/1', {absolute: 'path'});
-    } catch (e) {
-      console.log(e)
-      setError('Invalid username or password');
-    }
-  };
+  const error = useActionData() ?? '';
 
   return (
       <Container component="main" maxWidth="xs">
@@ -52,7 +31,8 @@ export default function LoginPage() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-            <Box component="form" method='POST' onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Form method='POST'>
+            <Box component="div"  sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -88,14 +68,13 @@ export default function LoginPage() {
               </Button>
               <Grid container>
                 <Grid item>
-                    <RouterLink to="/register">
-                      <Link href="#" variant="body2">
-                        {"Don't have an account? Sign Up"}
-                      </Link>
+                    <RouterLink style={{textDecorationColor: 'black', color: 'black'}} to="/register">
+                        {"Don't have an account? Sign Up"}                 
                     </RouterLink>
                 </Grid>
               </Grid>
             </Box>
+          </Form>
         </Box>
       </Container>
   );

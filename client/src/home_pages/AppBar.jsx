@@ -12,8 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
@@ -59,9 +58,10 @@ const pages = ['dashboard','history'];
 const settings = ['History', 'Logout'];
 
 function ResponsiveAppBar() {
-  const [state, setState] = useState(0);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [searchText, setSearchText] = useState(null);
+  const location = useLocation();
+  const state = location.pathname.split('/')[2];
   
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -72,14 +72,6 @@ function ResponsiveAppBar() {
       navigate(`search/${searchText}/1`, { absolute: "path" })
     }
   };
-
-  // useEffect(() => {
-  //   if(!searchText)
-  //       return;
-  //   if(searchText.length == 0)
-  //       return navigate(`dashboard/1`, { absolute: "path" })
-  //   navigate(`search/${searchText}/1`, { absolute: "path" })
-  // }, [searchText])
 
   const navigate = useNavigate();
   const handleOpenUserMenu = (event) => {
@@ -130,11 +122,9 @@ function ResponsiveAppBar() {
 
           <Box marginLeft={'50px'} sx={{ display: "flex", flexGrow: 1, gap: '20px'}}>
             {pages.map((page, ind) => (
-              <NavLink key={page} to={`${page}/1`} className={({ isActive }) => {
-                if(isActive)
-                    setState(ind);
-            }}><Button
-                sx={{ my: 2, color: 'white', fontSize: "18px", fontWeight:(state == ind?"bold":"normal") }}
+              <NavLink id={page} key={ind} to={`${page}/1`}>
+                <Button
+                sx={{ my: 2, color: 'white', fontSize: "18px", fontWeight:(state == page ?"bold":"normal") }}
               >
                 {page}
               </Button></NavLink>
@@ -147,7 +137,7 @@ function ResponsiveAppBar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
-              onChange={(event, value) => {
+              onChange={(event) => {
                 setSearchText(event.target.value)
               }}
               onKeyDown={handleKeyDown}

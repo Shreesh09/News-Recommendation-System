@@ -9,7 +9,7 @@ from datetime import datetime
 load_dotenv()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
-db = SQLAlchemy(app)
+db = SQLAlchemy(app, engine_options={"pool_pre_ping": True})
 
 # Define the User model
 class Users(db.Model):

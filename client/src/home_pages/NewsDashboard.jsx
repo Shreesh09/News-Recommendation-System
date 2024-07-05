@@ -1,6 +1,6 @@
 import { Container, Grid, Card, CardContent, Typography, CardActionArea, Box, Pagination } from '@mui/material';
 import { useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
-import { SERVER_URL } from './keys';
+import { SERVER_URL } from '../config/keys';
 import axios from 'axios';
 
 const addNewsRead = async (news_id) => {
