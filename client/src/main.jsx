@@ -1,18 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import "./index.css"
+import "./styles/index.css"
 import {
   createHashRouter,
+  redirect,
   RouterProvider,
 } from "react-router-dom";
 import ErrorPage from './ErrorPage.jsx';
-import LoginPage from './LoginPage.jsx';
-import RegistrationPage from './RegistrationPage.jsx';
-import NewsDashboard from './NewsDashboard.jsx';
+import LoginPage from './auth_pages/LoginPage.jsx';
+import RegistrationPage from './auth_pages/RegistrationPage.jsx';
+import NewsDashboard from './home_pages/NewsDashboard.jsx';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { recommendationLoader, historyLoader, searchLoader } from './news_loaders.jsx';
-import { Home } from './Home.jsx';
-import { loginAction, registrationAction } from './auth_actions.jsx';
+import { Home } from './home_pages/Home.jsx';
+import { loginAction, registrationAction } from './actions/auth_actions.jsx';
 import App from './App.jsx';
 
 
@@ -31,6 +32,8 @@ const theme = createTheme({
   },
 });
 
+const redirectToDashboard = () => {return redirect('/home/dashboard/1')}
+const redirectToLogin = () => {return redirect('/login')}
 
 const router = createHashRouter([
   {
@@ -39,10 +42,8 @@ const router = createHashRouter([
     errorElement: <ErrorPage/>,
     children: [
       {
-        path: "/",
-        element: <LoginPage/>,
-        errorElement: <ErrorPage/>,
-        action: loginAction,
+        path: "",
+        loader: redirectToLogin
       },
       {
         path: "/login",
@@ -63,6 +64,10 @@ const router = createHashRouter([
     path: "/home",
     element: <Home/>,
     children: [
+      {
+        path:"",
+        loader: redirectToDashboard,
+      },
       {
         path: "/home/dashboard/:page",
         element: <NewsDashboard/>,

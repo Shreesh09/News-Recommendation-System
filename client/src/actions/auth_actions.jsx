@@ -1,5 +1,5 @@
 import { redirect } from "react-router-dom";
-import { SERVER_URL } from "./keys";
+import { SERVER_URL } from "../config/keys";
 import axios from "axios";
 
 async function loginAction({request}) {
