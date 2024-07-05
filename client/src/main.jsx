@@ -33,7 +33,7 @@ const theme = createTheme({
 const router = createHashRouter([
   {
     path: "/",
-    element: <Home/>,
+    element: <LoginPage/>,
     errorElement: <ErrorPage/>,
   },
   {
