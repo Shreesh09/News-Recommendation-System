@@ -13,6 +13,7 @@ import axios from 'axios';
 import { SERVER_URL } from './keys';
 import { useNavigate } from 'react-router-dom';
 
+
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,8 +27,6 @@ export default function LoginPage() {
       const username = formData.get('username');
       const password = formData.get('password');
       const response = await axios.post(`${SERVER_URL}/login`, {username, password})
-      sessionStorage.removeItem('username');
-      sessionStorage.removeItem('token');
       sessionStorage.setItem('token', response.data.access_token);
       sessionStorage.setItem('username', username)
       navigate('/home/dashboard/1', {absolute: 'path'});

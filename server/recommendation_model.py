@@ -11,7 +11,7 @@ with open('data/tfidf_matrix.pkl', 'rb') as file:
 def content_based_filtering_model(indexes, inputs, page):
     #get similarity values with other articles
     vector = tf.transform(inputs)
-    vector = np.asarray(np.mean(vector, axis=0))
+    vector = np.asarray(np.sum(vector, axis=0))
     cosine_similarities = cosine_similarity(tfidf_matrix, vector)
     similarity_score = list(enumerate(cosine_similarities))
     similarity_score = [score for score in similarity_score if score[0] not in indexes]
@@ -19,7 +19,7 @@ def content_based_filtering_model(indexes, inputs, page):
     # Get the scores of the n most similar news articles. Ignore the first movie.
     start = 9*(page-1);
     end = min(9*(page), len(similarity_score))
-    similarity_score = similarity_score[start:end+1]
+    similarity_score = similarity_score[start:end]
     news_indices = [i[0] for i in similarity_score]
   
     return news_indices

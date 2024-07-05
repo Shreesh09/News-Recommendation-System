@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { recommendationLoader, historyLoader, searchLoader } from './news_loaders.jsx';
 import { Home } from './Home.jsx';
 
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -32,7 +33,7 @@ const theme = createTheme({
 const router = createHashRouter([
   {
     path: "/",
-    element: <LoginPage/>,
+    element: <Home/>,
     errorElement: <ErrorPage/>,
   },
   {
@@ -74,7 +75,7 @@ const router = createHashRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </ThemeProvider>
   </React.StrictMode>,
 )

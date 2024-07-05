@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,9 +13,8 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDeferredValue } from 'react';
+import { useState } from 'react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -55,21 +53,33 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
+
+
 const pages = ['dashboard','history'];
 const settings = ['History', 'Logout'];
 
 function ResponsiveAppBar() {
-  const [state, setState] = React.useState(0);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [searchText, setSearchText] = React.useState(null);
-
-  useEffect(() => {
-    if(!searchText)
+  const [state, setState] = useState(0);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [searchText, setSearchText] = useState(null);
+  
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      if(!searchText)
         return;
-    if(searchText.length == 0)
-        return navigate(`dashboard/1`, { absolute: "path" })
-    navigate(`search/${searchText}/1`, { absolute: "path" })
-  }, [searchText])
+      if(searchText.length == 0)
+          return navigate(`dashboard/1`, { absolute: "path" })
+      navigate(`search/${searchText}/1`, { absolute: "path" })
+    }
+  };
+
+  // useEffect(() => {
+  //   if(!searchText)
+  //       return;
+  //   if(searchText.length == 0)
+  //       return navigate(`dashboard/1`, { absolute: "path" })
+  //   navigate(`search/${searchText}/1`, { absolute: "path" })
+  // }, [searchText])
 
   const navigate = useNavigate();
   const handleOpenUserMenu = (event) => {
@@ -140,6 +150,7 @@ function ResponsiveAppBar() {
               onChange={(event, value) => {
                 setSearchText(event.target.value)
               }}
+              onKeyDown={handleKeyDown}
               value={searchText??""}
             />
           </Search>

@@ -1,8 +1,12 @@
 import axios from 'axios';
-import { headers, SERVER_URL } from './keys.jsx';
+import { SERVER_URL } from './keys.jsx';
 import { redirect } from 'react-router-dom';
 
 const recommendationLoader = async ({ params }) => {
+    const token = sessionStorage.getItem('token');
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    }
     let state = 0
     let page = params.page ?? 1;
     let response;
@@ -19,6 +23,10 @@ const recommendationLoader = async ({ params }) => {
   }
   
   const historyLoader = async ({ params }) => {
+    const token = sessionStorage.getItem('token');
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    }
     let state = 1
     let page = params.page ?? 1;
     let response;
@@ -35,6 +43,10 @@ const recommendationLoader = async ({ params }) => {
   }
   
   const searchLoader = async ({ params }) => {
+    const token = sessionStorage.getItem('token');
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    }
     let state = 2
     let search = params.search;
     let page = params.page ?? 1;

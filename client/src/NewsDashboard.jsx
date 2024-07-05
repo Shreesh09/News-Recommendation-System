@@ -1,11 +1,14 @@
 import { Container, Grid, Card, CardContent, Typography, CardActionArea, Box, Pagination } from '@mui/material';
-import ResponsiveAppBar from './AppBar';
 import { useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
-import { SERVER_URL, headers } from './keys';
+import { SERVER_URL } from './keys';
 import axios from 'axios';
 
 const addNewsRead = async (news_id) => {
   try {
+    const token = sessionStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    }
     const username = sessionStorage.getItem('username');
     axios.post(`${SERVER_URL}/addNewsRead`, { username, news_id }, { headers });
   } catch(e) {
@@ -16,6 +19,7 @@ const addNewsRead = async (news_id) => {
 const NewsDashboard = () => {
   const navigate = useNavigate();
   const navigation = useNavigation();
+
   const { state, page, articles, search } = useLoaderData();
   const title = state == 0 ? 'Recommended Articles' : state == 1 ? 'History' : `Search Results for "${search}"`;
   return (
