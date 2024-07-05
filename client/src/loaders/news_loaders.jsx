@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SERVER_URL } from './keys.jsx';
+import { SERVER_URL } from '../config/keys.jsx';
 import { redirect } from 'react-router-dom';
 
 const recommendationLoader = async ({ params }) => {

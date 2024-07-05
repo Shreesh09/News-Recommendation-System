@@ -11,7 +11,7 @@ import LoginPage from './auth_pages/LoginPage.jsx';
 import RegistrationPage from './auth_pages/RegistrationPage.jsx';
 import NewsDashboard from './home_pages/NewsDashboard.jsx';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { recommendationLoader, historyLoader, searchLoader } from './news_loaders.jsx';
+import { recommendationLoader, historyLoader, searchLoader } from './loaders/news_loaders.jsx';
 import { Home } from './home_pages/Home.jsx';
 import { loginAction, registrationAction } from './actions/auth_actions.jsx';
 import App from './App.jsx';
