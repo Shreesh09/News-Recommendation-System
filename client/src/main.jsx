@@ -12,7 +12,7 @@ import NewsDashboard from './NewsDashboard.jsx';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { recommendationLoader, historyLoader, searchLoader } from './news_loaders.jsx';
 import { Home } from './Home.jsx';
-import { registrationAction } from './auth_actions.jsx';
+import { loginAction, registrationAction } from './auth_actions.jsx';
 import App from './App.jsx';
 
 
@@ -31,6 +31,7 @@ const theme = createTheme({
   },
 });
 
+
 const router = createHashRouter([
   {
     path: "/",
@@ -41,11 +42,13 @@ const router = createHashRouter([
         path: "/",
         element: <LoginPage/>,
         errorElement: <ErrorPage/>,
+        action: loginAction,
       },
       {
         path: "/login",
         element: <LoginPage/>,
         errorElement: <ErrorPage/>,
+        action: loginAction,
       },
       {
         path: "/register",
@@ -79,7 +82,7 @@ const router = createHashRouter([
         loader: searchLoader,
       }
     ]
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
