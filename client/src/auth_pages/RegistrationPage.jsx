@@ -7,13 +7,14 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Form, Link as RouterLink } from 'react-router-dom';
+import { Form, Link as RouterLink, useNavigation } from 'react-router-dom';
 
 
 
 export default function RegistrationPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
   return (
     <Container component="main" maxWidth="xs">
@@ -63,6 +64,7 @@ export default function RegistrationPage() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={navigation.state === "submitting"}
           >
             {'Create Account'}
           </Button>

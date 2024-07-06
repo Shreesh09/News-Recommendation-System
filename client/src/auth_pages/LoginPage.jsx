@@ -1,23 +1,22 @@
 import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Form, Link as RouterLink, useActionData } from 'react-router-dom';
+import { Form, Link as RouterLink, useActionData, useNavigation } from 'react-router-dom';
 
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const error = useActionData() ?? '';
-
+  const navigate = useNavigation();
+  
   return (
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -63,6 +62,7 @@ export default function LoginPage() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={navigate.state == "submitting"}
               >
                 Sign In
               </Button>
