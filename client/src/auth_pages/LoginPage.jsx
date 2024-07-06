@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Form, Link as RouterLink, useActionData, useNavigation } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
 
 
 export default function LoginPage() {
@@ -16,7 +17,9 @@ export default function LoginPage() {
   const navigate = useNavigation();
   
   return (
+    
       <Container component="main" maxWidth="xs">
+        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
