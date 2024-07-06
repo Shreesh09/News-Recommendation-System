@@ -171,7 +171,7 @@ function ResponsiveAppBar() {
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={() => {
                   if(setting == 'History') {
-                    if(state == 0 || state == 2) {
+                    if(state != 'history') {
                       navigate(`history/1`, { absolute: "path" })
                     }
                   } else {
