@@ -54,7 +54,7 @@ const NewsDashboard = () => {
           </Grid>
         )))}
       </Grid>
-    <Pagination page={parseInt(page)} onChange={(event,value)=> {navigate(`../${value}`, { relative: "path" })}} count={10} shape="rounded" />
+    <Pagination page={parseInt(page)} onChange={(event,value)=> {navigate(`../${value}`, { relative: "path" })}} count={50} shape="rounded" />
     </Container>
     </div>
     </>
